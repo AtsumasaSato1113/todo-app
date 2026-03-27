@@ -1,0 +1,34 @@
+services:
+  backend:
+    build: ./backend
+    container_name: todo-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      # SQLiteのDBファイルを永続化 (コンテナを再起動してもデータが消えない)
+      - todo-db:/app
+    environment:
+      - DATABASE_URL=sqlite:///./todos.db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      target: builder   # 開発時はViteのdev serverを使う
+    container_name: todo-frontend
+    ports:
+      - "5173:5173"
+    command: npm run dev
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  todo-db:

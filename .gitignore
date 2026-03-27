@@ -1,0 +1,28 @@
+# AWS認証情報（絶対にコミットしない）
+*.csv
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.pyc
+*.db
+.venv/
+venv/
+
+# Node
+node_modules/
+dist/
+frontend/build/
+
+# 環境変数 (秘密情報が入るので絶対にGitに入れない)
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
